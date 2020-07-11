@@ -6,20 +6,9 @@ import Person from './Person/Person';
 // import UserOutput from './UserOutput/UserOutput';
 // import ValidationComponent from './ValidationComponent/ValidationComponent';
 // import Char from './Char/Char';
-import styled from 'styled-components';
 
-const StyledButton = styled.button`
-      background-color: ${props => props.alt ? 'red' : 'green'};
-      color: white;
-      font: inherit;
-      border: 1px solid blue;
-      padding: 8px;
-      cursor: pointer;
-      &:hover {
-        background-color: ${props => props.alt ? 'salmon' : 'lightgreen'};
-        color: black;
-      }  
-`;
+
+
 
 class App extends Component {
   state = {
@@ -103,7 +92,7 @@ class App extends Component {
         <div className="App">
         <h1>Hi,i am React.</h1>
         <p className={classes.join(' ')}>This is really working!</p>
-        <StyledButton alt={this.state.showPerson} onClick={this.togglePersonHandler}>Switch</StyledButton>
+        <button className="button" alt={this.state.showPerson} onClick={this.togglePersonHandler}>Switch</button>
           {persons}
         </div>
       
