@@ -1,8 +1,25 @@
 import React, { Component } from 'react';
 import './App.css';
+// import Radium, {StyleRoot} from 'radium';
 import Person from './Person/Person';
 // import UserInput from './UserInput/UserInput';
 // import UserOutput from './UserOutput/UserOutput';
+// import ValidationComponent from './ValidationComponent/ValidationComponent';
+// import Char from './Char/Char';
+import styled from 'styled-components';
+
+const StyledButton = styled.button`
+      background-color: ${props => props.alt ? 'red' : 'green'};
+      color: white;
+      font: inherit;
+      border: 1px solid blue;
+      padding: 8px;
+      cursor: pointer;
+      &:hover {
+        background-color: ${props => props.alt ? 'salmon' : 'lightgreen'};
+        color: black;
+      }  
+`;
 
 class App extends Component {
   state = {
@@ -14,6 +31,8 @@ class App extends Component {
     other: 'someState',
     showPerson: false
   };
+
+  
 
   deletePersonHandler = (personIndex) => {
     //const persons = this.state.person.slice();
@@ -43,13 +62,18 @@ class App extends Component {
   };
 
   render() {
-    const style = {
-      backgroundColor: 'white',
-      font: 'inherit',
-      border: '1px solid blue',
-      padding: '8px',
-      cursor: 'pointer'
-    };
+    // const style = {
+    //   backgroundColor: 'green',
+    //   color: 'white',
+    //   font: 'inherit',
+    //   border: '1px solid blue',
+    //   padding: '8px',
+    //   cursor: 'pointer',
+    //   ':hover': {
+    //     backgroundColor: 'lightgreen',
+    //     color: 'black'
+    //   }
+    // };
 
     let persons = null;
     if(this.state.showPerson){
@@ -60,14 +84,29 @@ class App extends Component {
           })}
         </div> 
       );
+      // style.backgroundColor = 'red';
+      // style[':hover'] = {
+      //   backgroundColor: 'salmon',
+      //   color: 'black'
+      // };
+    }
+    const classes = [];
+    if(this.state.person.length <= 2){
+      classes.push('red');
+    }
+    if(this.state.person.length <= 1){
+      classes.push('bold');
     }
 
     return (
-      <div className="App">
-       <h1>Hi,i am React.</h1>
-       <button style={style} onClick={this.togglePersonHandler}>Switch</button>
-        {persons}
-      </div>
+      
+        <div className="App">
+        <h1>Hi,i am React.</h1>
+        <p className={classes.join(' ')}>This is really working!</p>
+        <StyledButton alt={this.state.showPerson} onClick={this.togglePersonHandler}>Switch</StyledButton>
+          {persons}
+        </div>
+      
     );
   }
 
@@ -90,6 +129,36 @@ class App extends Component {
   //       <UserOutput userName={this.state.userName} />  
   //     </div>
   //   );
+  // }
+
+  // state = {
+  //   userInput: ''
+  // }
+ 
+
+  // inputChangeHandler = (event) => {
+  //   this.setState({userInput: event.target.value});
+  // };
+
+  // deleteChangeHandler = (index) => {
+  //   const text = this.state.userInput.split('');
+  //   text.splice(index, 1);
+  //   const updatedText = text.join('');
+  //   this.setState({userInput: updatedText});
+  // };
+  
+  // render(){
+  //   const charList = this.state.userInput.split('').map((ch, index) => {
+  //     return <Char charactor={ch} key={index} checked={() => this.deleteChangeHandler(index)} />
+  //   })
+  //   return (
+  //     <div className="App">
+  //       <input type='text' onChange={this.inputChangeHandler} value={this.state.userInput} />
+  //       <p>{this.state.userInput}</p>
+  //       <ValidationComponent inputLength={this.state.userInput.length} />
+  //       {charList}
+  //     </div>
+  //     );
   // }
 }
 
