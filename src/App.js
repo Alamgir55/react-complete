@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import './App.css';
+import classes from './App.css';
 // import Radium, {StyleRoot} from 'radium';
 import Person from './Person/Person';
 // import UserInput from './UserInput/UserInput';
 // import UserOutput from './UserOutput/UserOutput';
 // import ValidationComponent from './ValidationComponent/ValidationComponent';
 // import Char from './Char/Char';
+import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
 
 
 
@@ -65,41 +66,41 @@ class App extends Component {
     // };
 
     let persons = null;
+    let btnClass = [classes.Button];
+
     if(this.state.showPerson){
       persons = (
         <div>
           {this.state.person.map((pers, index) => {
-            return <Person click={() => this.deletePersonHandler(index)} change={(event) => this.nameChangeHandler(event, pers.id)} name={pers.name} age={pers.age} key={pers.id} />
+            return <ErrorBoundary key={pers.id}>
+             <Person click={() => this.deletePersonHandler(index)} change={(event) => this.nameChangeHandler(event, pers.id)} name={pers.name} age={pers.age}  />
+             </ErrorBoundary>
           })}
         </div> 
       );
-      // style.backgroundColor = 'red';
-      // style[':hover'] = {
-      //   backgroundColor: 'salmon',
-      //   color: 'black'
-      // };
+    
+      btnClass.push(classes.Red);
     }
-    const classes = [];
+    const assignedClasses = [];
     if(this.state.person.length <= 2){
-      classes.push('red');
+      assignedClasses.push(classes.red);
     }
     if(this.state.person.length <= 1){
-      classes.push('bold');
+      assignedClasses.push(classes.bold);
     }
 
     return (
       
-        <div className="App">
+        <div className={classes.App}>
         <h1>Hi,i am React.</h1>
-        <p className={classes.join(' ')}>This is really working!</p>
-        <button className="button" alt={this.state.showPerson} onClick={this.togglePersonHandler}>Switch</button>
+        <p className={assignedClasses.join(' ')}>This is really working!</p>
+        <button className={btnClass.join(' ')} alt={this.state.showPerson} onClick={this.togglePersonHandler}>Switch</button>
           {persons}
         </div>
-      
     );
   }
 
-  // state = {
+  // state = {s
   //   userName: 'Max'
   // };
 
