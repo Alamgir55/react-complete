@@ -1,17 +1,24 @@
 import React, { Component } from 'react';
 import classes from './App.css';
 // import Radium, {StyleRoot} from 'radium';
-import Person from './Person/Person';
+import Persons from '../components/Persons/Persons';
 // import UserInput from './UserInput/UserInput';
 // import UserOutput from './UserOutput/UserOutput';
 // import ValidationComponent from './ValidationComponent/ValidationComponent';
 // import Char from './Char/Char';
-import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
+// import ErrorBoundary from '../components/ErrorBoundary/ErrorBoundary';
+import Cockpit from '../components/Cockpit/Cockpit';
 
 
 
 
 class App extends Component {
+
+  constructor(props){
+    super(props);
+    console.log('[App.js] constructor');
+  }
+
   state = {
     person: [
       {id:'vdlie2', name: 'menu', age: '27'},
@@ -23,6 +30,23 @@ class App extends Component {
   };
 
   
+  static getDerivedStateFromProps(props, state){
+    console.log('[App.js] getDerivedStateFromProps', props);
+    return state;
+  }
+
+  componentDidMount(){
+    console.log('[App.js] componentDidMount');
+  }
+
+  shouldComponentUpdate(nextProps, nextState){
+    console.log('[App.js] shouldComponentUpdate');
+    return true;
+  }
+
+  componentDidUpdate(){
+    console.log('[App.js] componentDidUpdate');
+  }
 
   deletePersonHandler = (personIndex) => {
     //const persons = this.state.person.slice();
@@ -52,6 +76,7 @@ class App extends Component {
   };
 
   render() {
+    console.log('[App.js] render');
     // const style = {
     //   backgroundColor: 'green',
     //   color: 'white',
@@ -66,35 +91,20 @@ class App extends Component {
     // };
 
     let persons = null;
-    let btnClass = [classes.Button];
+   
 
     if(this.state.showPerson){
       persons = (
         <div>
-          {this.state.person.map((pers, index) => {
-            return <ErrorBoundary key={pers.id}>
-             <Person click={() => this.deletePersonHandler(index)} change={(event) => this.nameChangeHandler(event, pers.id)} name={pers.name} age={pers.age}  />
-             </ErrorBoundary>
-          })}
+          <Persons persons={this.state.person} click={this.deletePersonHandler} change={this.nameChangeHandler} />
         </div> 
       );
     
-      btnClass.push(classes.Red);
     }
-    const assignedClasses = [];
-    if(this.state.person.length <= 2){
-      assignedClasses.push(classes.red);
-    }
-    if(this.state.person.length <= 1){
-      assignedClasses.push(classes.bold);
-    }
-
-    return (
-      
+    
+    return (  
         <div className={classes.App}>
-        <h1>Hi,i am React.</h1>
-        <p className={assignedClasses.join(' ')}>This is really working!</p>
-        <button className={btnClass.join(' ')} alt={this.state.showPerson} onClick={this.togglePersonHandler}>Switch</button>
+          <Cockpit title={this.props.appTitle} showPerson={this.state.showPerson} clicked={this.togglePersonHandler} persons={this.state.person} />
           {persons}
         </div>
     );
