@@ -1,13 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import classes from './Cockpit.css'
 
 const Cockpit = (props) => {
+  const toggleBtnRef = useRef(null);
+  
+
   useEffect(() => {
     console.log('[Cockpit.js] useEffect');
 
-    setTimeout(() => {
-      alert('Save data to cloud!');
-    }, 1000);
+    // setTimeout(() => {
+    //   alert('Save data to cloud!');
+    // }, 1000);
+    toggleBtnRef.current.click();
     return () => {
       console.log('[Cockpit.js] cleanup work in useEffect');
     };
@@ -27,10 +31,10 @@ const Cockpit = (props) => {
         btnClass = classes.Red;
     }
 
-    if(props.persons.length <= 2){
+    if(props.personsLength <= 2){
       assignedClasses.push(classes.red);
     }
-    if(props.persons.length <= 1){
+    if(props.personsLength <= 1){
       assignedClasses.push(classes.bold);
     }
 
@@ -38,9 +42,9 @@ const Cockpit = (props) => {
         <div className={classes.Cockpit}>
             <h1>{props.title}</h1>
             <p className={assignedClasses.join(' ')}>This is really working!</p>
-            <button className={btnClass} alt={props.showPerson} onClick={props.clicked}>Switch</button>
+            <button className={btnClass} alt={props.showPerson} ref={toggleBtnRef} onClick={props.clicked}>Switch</button>
         </div>
         );
 };
 
-export default Cockpit;
+export default React.memo(Cockpit);

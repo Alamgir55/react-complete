@@ -8,7 +8,8 @@ import Persons from '../components/Persons/Persons';
 // import Char from './Char/Char';
 // import ErrorBoundary from '../components/ErrorBoundary/ErrorBoundary';
 import Cockpit from '../components/Cockpit/Cockpit';
-
+import withClass from '../hoc/withClass';
+import Aux from '../hoc/auxilliary';
 
 
 
@@ -21,13 +22,14 @@ class App extends Component {
 
   state = {
     person: [
-      {id:'vdlie2', name: 'menu', age: '27'},
-      {id:'ldiej3', name: 'stepnie', age: '28'},
-      {id:'dieio1', name: 'max', age: '26'}
+      {id:'vdlie2', name: 'menu', age: 27},
+      {id:'ldiej3', name: 'stepnie', age: 28},
+      {id:'dieio1', name: 'max', age: 26}
     ],
     other: 'someState',
     showPerson: false,
-    showCockpit: true
+    showCockpit: true,
+    changeCounter: 0
   };
 
   
@@ -66,7 +68,12 @@ class App extends Component {
     const persons = [...this.state.person];
     persons[personIndex] = person;
 
-    this.setState({person: persons});
+    this.setState((prevState, props) => {
+      return {
+        person: persons,
+        changeCounter: prevState.changeCounter + 1
+      };
+    });
   };
 
   togglePersonHandler = () => {
@@ -100,15 +107,14 @@ class App extends Component {
           <Persons persons={this.state.person} click={this.deletePersonHandler} change={this.nameChangeHandler} />
         </div> 
       );
-    
     }
     
     return (  
-        <div className={classes.App}>
+        <Aux>
           <button onClick={() => {this.setState({showCockpit: false});}} >Remove Cockpit</button>
-          {this.state.showCockpit ? (<Cockpit title={this.props.appTitle} showPerson={this.state.showPerson} clicked={this.togglePersonHandler} persons={this.state.person} /> ) : null}
+          {this.state.showCockpit ? (<Cockpit title={this.props.appTitle} showPerson={this.state.showPerson} clicked={this.togglePersonHandler} personsLength={this.state.person.length} /> ) : null}
           {persons}
-        </div>
+        </Aux>
     );
   }
 
@@ -164,4 +170,4 @@ class App extends Component {
   // }
 }
 
-export default App;
+export default withClass(App, classes.App);
