@@ -10,6 +10,7 @@ import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
 import withClass from '../hoc/withClass';
 import Aux from '../hoc/auxilliary';
+import authContext from '../context/auth-context';
 
 
 
@@ -29,7 +30,8 @@ class App extends Component {
     other: 'someState',
     showPerson: false,
     showCockpit: true,
-    changeCounter: 0
+    changeCounter: 0,
+    authenticated: false
   };
 
   
@@ -57,6 +59,8 @@ class App extends Component {
     persons.splice(personIndex, 1);
     this.setState({person: persons});
   };
+
+  loginHandler = () => {this.setState({authenticated: true})};
 
   nameChangeHandler = (event, id) => {
     const personIndex = this.state.person.findIndex(p => {
@@ -104,16 +108,19 @@ class App extends Component {
     if(this.state.showPerson){
       persons = (
         <div>
-          <Persons persons={this.state.person} click={this.deletePersonHandler} change={this.nameChangeHandler} />
+          <Persons persons={this.state.person} isAuthenticated={this.state.authenticated} click={this.deletePersonHandler} change={this.nameChangeHandler} />
         </div> 
       );
     }
     
     return (  
+      
         <Aux>
           <button onClick={() => {this.setState({showCockpit: false});}} >Remove Cockpit</button>
-          {this.state.showCockpit ? (<Cockpit title={this.props.appTitle} showPerson={this.state.showPerson} clicked={this.togglePersonHandler} personsLength={this.state.person.length} /> ) : null}
-          {persons}
+          <authContext.Provider value={{authenticated: this.state.authenticated, login: this.loginHandler}}>  
+            {this.state.showCockpit ? (<Cockpit title={this.props.appTitle} showPerson={this.state.showPerson} clicked={this.togglePersonHandler} personsLength={this.state.person.length} /> ) : null}
+            {persons}
+          </authContext.Provider>  
         </Aux>
     );
   }
